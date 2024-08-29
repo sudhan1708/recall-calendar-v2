@@ -11,7 +11,7 @@ export default async (job) => {
     id: recallId,
     lastUpdatedTimestamp,
   });
-
+  console.log("events :", events)
   let eventsUpserted = [];
   let eventsDeleted = [];
   for (const event of events) {

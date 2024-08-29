@@ -18,10 +18,15 @@ export default async (job) => {
     updatedEventFromRecall = await Recall.addBotToCalendarEvent({
       id: event.recallId,
       deduplicationKey: `${event.startTime.toISOString()}-${event.meetingUrl}`,
-      botConfig: {},
+      botConfig: {
+        "bot_name": "ConvoZen.ai",
+        "metadata": {
+          "organisation": "convozen"
+        }
+      },
     });
   } else {
-    console.log(`INFO: Delete bot for event ${event.id}`);
+    console.log(`INFO: Delete bot for event ${event.id}` );
     // delete the bot for the event. Recall will handle the case where the bot does not exist.
     updatedEventFromRecall = await Recall.removeBotFromCalendarEvent({
       id: event.recallId,

@@ -26,7 +26,7 @@ export async function updateAutoRecordStatusForCalendarEvents({
       continue;
     }
 
-    let shouldRecordAutomatic = false;
+    let shouldRecordAutomatic = true;
     if (autoRecordExternalEvents) {
       shouldRecordAutomatic = isExternalEvent({
         event,
@@ -53,14 +53,20 @@ export async function updateAutoRecordStatusForCalendarEvents({
 
 function isExternalEvent({ event, calendarEmail }) {
   return getAttendeesForCalendarEvent(event)
-    .map((attendee) => attendee["email"])
-    .reduce(
-      (acc, attendeeEmail) =>
-        acc ||
-        attendeeEmail.split("@")[1].toLowerCase() !==
-          calendarEmail.split("@")[1].toLowerCase(),
-      false
-    );
+  .map((attendee) => attendee["email"])
+  .reduce((acc, attendeeEmail) => {
+    if (!attendeeEmail || !calendarEmail) {
+      // Handle the case where either email is null or undefined
+      console.error("One of the emails is null or undefined:", { attendeeEmail, calendarEmail });
+      return acc; // Keep the accumulator as is
+    }
+
+    // Proceed with domain comparison
+    return acc || 
+      attendeeEmail.split("@")[1].toLowerCase() !== 
+      calendarEmail.split("@")[1].toLowerCase();
+  }, false);
+
 }
 
 function isConfirmedEvent({ event, calendarEmail }) {

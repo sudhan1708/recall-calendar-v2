@@ -1,3 +1,5 @@
+import { response } from "express";
+
 class RecallApi {
   constructor({ apiKey, apiHost }) {
     this.apiKey = apiKey;
@@ -26,12 +28,14 @@ class RecallApi {
     const res = await fetch(url, {
       method,
       headers: {
-        authorization: `Token ${this.apiKey}`,
+        "Authorization": `${this.apiKey}`,
         "content-type": "application/json",
         ...headers,
       },
       ...(data ? { body: JSON.stringify(data) } : {}),
     });
+    
+    console.log("response status :", res.status)
 
     if (res.status > 299) {
       const body = await res.text();

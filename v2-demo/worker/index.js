@@ -54,3 +54,5 @@ backgroundQueue.on("stalled", async (job) => {
 process.on("SIGINT", async () => {
   await backgroundQueue.close();
 });
+
+console.log("Started all background processes")

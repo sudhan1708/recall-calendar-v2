@@ -34,6 +34,7 @@ export default {
   },
   fetchCalendarEvents: async ({ id, lastUpdatedTimestamp }) => {
     let events = [];
+    console.log("Fetching calendar events")
     let pageUrl = client.buildUrl("/api/v2/calendar-events/", {
       calendar_id: id,
       updated_at__gte: lastUpdatedTimestamp,
@@ -56,6 +57,7 @@ export default {
       
       pageUrl = next;
     }
+    console.log("events ", events)
     return events;
   },
   

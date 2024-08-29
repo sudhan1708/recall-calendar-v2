@@ -6,7 +6,8 @@ import {
 
 export default async (req, res) => {
   if (req.authenticated) {
-    const calendars = await req.authentication.user.getCalendars();    
+    const calendars = await req.authentication.user.getCalendars();  
+    console.log("calendars ", calendars);  
     return res.render("index.ejs", {
       notice: req.notice,
       user: req.authentication.user,

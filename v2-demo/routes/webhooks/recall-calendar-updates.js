@@ -33,6 +33,7 @@ export default async (req, res) => {
       recallId: calendar.recallId,
     });
   } else if (event === "calendar.sync_events") {
+    console.log("Added event" , event)
     backgroundQueue.add("recall.calendar.sync_events", {
       calendarId: calendar.id,
       recallId: calendar.recallId,
