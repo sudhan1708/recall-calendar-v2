@@ -26,6 +26,11 @@ const getBase64FromFile = (filePath) => {
 };
 
 
+const getOrgNameFromEmail = (email) => {
+  const match = email.match(/@([^\.]+)\./);
+  return match ? match[1] : null; 
+}
+
 // add or remove bot for a calendar event based on its record status
 export default async (job) => {
   const { recallEventId } = job.data;
@@ -40,6 +45,8 @@ export default async (job) => {
   ) {
     console.log(`INFO: Schedule bot for event ${event.id}`);
     const base64Data = await getBase64FromFile(filePath);
+    const creatorEmail = event.recallData.raw.creator.email;
+    const organisation = getOrgNameFromEmail(creatorEmail);
     // add a bot to record the event. Recall will handle the case where the bot already exists.
     updatedEventFromRecall = await Recall.addBotToCalendarEvent({
       id: event.recallId,
@@ -47,7 +54,7 @@ export default async (job) => {
       botConfig: {
         "bot_name": "ConvoZen.ai",
         "metadata": {
-          "organisation": "convozen"
+          "organisation": organisation
         },
         "automatic_video_output": {
           "in_call_recording": {
